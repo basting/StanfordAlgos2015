@@ -1,3 +1,4 @@
+package com.bighi.algos.week2;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -17,7 +18,7 @@ size   first      last      median
 1000 10297 10184  8921
  */
 
-public class QuickSortLeftElem {
+public class QuickSortMedianOf3 {
 
 	private static final String FILENAME1 = "week2/QuickSort.txt";
 	//private static final String FILENAME1 = "week2/1000.txt";
@@ -61,6 +62,8 @@ public class QuickSortLeftElem {
 		
 		// For the simplicity, we took the right most item of the array as a
 		// pivot
+		int medianOf3Idx = getMedianOfThreeIdx(a, left, right);		
+		swap(a, left, medianOf3Idx);
 		int pivot = a[left];
 
 		int partition = partition(a, left, right, pivot);
