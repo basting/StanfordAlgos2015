@@ -1,8 +1,44 @@
 package com.bighi.algos.week4;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.List;
+
 public class SCCComputer {
+	private static final String FILENAME1 = "week4/small1.txt";
 	
-	public void computeSCC() {
+	public static void main(String[] args) throws IOException {
+		Graph g = new Graph();
+		
+		File file = new File(FILENAME1);
+		Path path = file.toPath();
+		
+		List<String> allInput = Files.readAllLines(path, Charset.defaultCharset());
+		
+		for(String ip: allInput) {
+			String[] vertices = ip.split(" ");
+			int val1 = Integer.valueOf(vertices[0]);
+			int val2 = Integer.valueOf(vertices[1]);
+			
+			Node n1 = new Node(val1);
+			Node n2 = new Node(val2);
+			
+			Edge e = new Edge(n1,n2);
+			
+			n1.addOutGoingEdge(e);
+			n2.addIncomingEdge(e);
+			
+			g.addEdge(e);
+			g.addNodes(n1, n2);
+		}
+		
+		new SCCComputer().computeSCC(g);
+	}
+	
+	public void computeSCC(Graph g) {
 		
 	}
 	
