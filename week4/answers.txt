@@ -1,0 +1,5 @@
+small1.txt = Answer: 3,3,3,0,0
+small2.txt = Answer: 3,3,2,0,0
+small3.txt = Answer: 3,3,1,1,0
+small4.txt = Answer: 7,1,0,0,0
+small5.txt = Answer: 6,3,2,1,0
