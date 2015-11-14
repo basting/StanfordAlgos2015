@@ -8,37 +8,33 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Scanner;
 import java.util.TreeSet;
 
 public class SCCComputer {
-	private static final String FILENAME1 = "week4/small1.txt";
+	private static final String FILENAME1 = "week4/SCC.txt";
 
 	int t = 0; // # of nodes processed so far
 	Node s = null; // current source vertex
-
-	ArrayList<Integer> finalSccCounts = new ArrayList<>();
 	int localSccCount;
-	
+		
 	public static void main(String[] args) throws IOException {
+		System.out.println(new SCCComputer().getTop5Sccs(FILENAME1));
+	}
+	
+	public List<Integer> getTop5Sccs(String fileName) throws IOException {
 		Graph g = new Graph();
 
-		File file = new File(FILENAME1);
+		File file = new File(fileName);
 		Path path = file.toPath();
 
 		List<String> allInput = Files.readAllLines(path,
 				Charset.defaultCharset());
 
-		Scanner sc = new Scanner(path);
-		
 		for (String ip : allInput) {
-		//while(sc.hasNext()) {
 			String[] vertices = ip.split(" ");
 			int val1 = Integer.valueOf(vertices[0]);
 			int val2 = Integer.valueOf(vertices[1]);
-			//int val1 = sc.nextInt();
-			//int val2 = sc.nextInt();
-
+			
 			Node n1 = g.addNode(val1);
 			Node n2 = g.addNode(val2);
 
@@ -50,16 +46,20 @@ public class SCCComputer {
 			n2.addIncomingEdge(e);
 		}
 
-		new SCCComputer().computeSCC(g);
+		List<Integer> finalSccCounts = new SCCComputer().computeSCC(g);
+		//System.out.println(finalSccCounts);
+		return finalSccCounts.subList(0,5);
 	}
 
-	public void computeSCC(Graph g) {
+	public List<Integer> computeSCC(Graph g) {
+		List<Integer> finalSccCounts = new ArrayList<>();
+		
 		g.reverseEdgeDirections();
-		dfsLoop(g, false);
+		dfsLoop(g, false, finalSccCounts);
 		g.unMarkAllNodes();
 		g.switchValuesAndFinishingTimeInNodes();
 		g.reverseEdgeDirections();
-		dfsLoop(g, true);
+		dfsLoop(g, true, finalSccCounts);
 		Collections.sort(finalSccCounts);
 		Collections.reverse(finalSccCounts);
 		int size = finalSccCounts.size();
@@ -68,9 +68,10 @@ public class SCCComputer {
 			size++;
 		}
 		System.out.println(finalSccCounts);
+		return finalSccCounts;
 	}
 
-	public void dfsLoop(Graph g, boolean countScc) {
+	public void dfsLoop(Graph g, boolean countScc, List<Integer> finalSccCounts) {
 		TreeSet<Node> sortedNodes = g.getNodesInSortedOrder();
 		for(Node i: sortedNodes) {
 			if(!i.isExplored()) {
