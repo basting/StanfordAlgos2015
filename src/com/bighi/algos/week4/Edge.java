@@ -6,7 +6,7 @@ public class Edge {
 	
 	@Override
 	public String toString() {
-		return startNode + "-->" + endNode;
+		return startNode.getValue() + "-->" + endNode.getValue();
 	}
 	
 	public Edge(Node startNode, Node endNode) {

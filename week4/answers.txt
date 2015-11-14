@@ -3,3 +3,6 @@ small2.txt = Answer: 3,3,2,0,0
 small3.txt = Answer: 3,3,1,1,0
 small4.txt = Answer: 7,1,0,0,0
 small5.txt = Answer: 6,3,2,1,0
+test_data_py1.txt = Answer: 5, 3, 2, 0, 0
+test_data_py2.txt = Answer: 7,6,6,6,6
+test_data_py3.txt = Answer: 4,4,3,3,1

@@ -5,49 +5,100 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Scanner;
+import java.util.TreeSet;
 
 public class SCCComputer {
 	private static final String FILENAME1 = "week4/small1.txt";
+
+	int t = 0; // # of nodes processed so far
+	Node s = null; // current source vertex
+
+	ArrayList<Integer> finalSccCounts = new ArrayList<>();
+	int localSccCount;
 	
 	public static void main(String[] args) throws IOException {
 		Graph g = new Graph();
-		
+
 		File file = new File(FILENAME1);
 		Path path = file.toPath();
+
+		List<String> allInput = Files.readAllLines(path,
+				Charset.defaultCharset());
+
+		Scanner sc = new Scanner(path);
 		
-		List<String> allInput = Files.readAllLines(path, Charset.defaultCharset());
-		
-		for(String ip: allInput) {
+		for (String ip : allInput) {
+		//while(sc.hasNext()) {
 			String[] vertices = ip.split(" ");
 			int val1 = Integer.valueOf(vertices[0]);
 			int val2 = Integer.valueOf(vertices[1]);
-			
-			Node n1 = new Node(val1);
-			Node n2 = new Node(val2);
-			
-			Edge e = new Edge(n1,n2);
-			
-			n1.addOutGoingEdge(e);
-			n2.addIncomingEdge(e);
-			
+			//int val1 = sc.nextInt();
+			//int val2 = sc.nextInt();
+
+			Node n1 = g.addNode(val1);
+			Node n2 = g.addNode(val2);
+
+			Edge e = new Edge(n1, n2);
+
 			g.addEdge(e);
-			g.addNodes(n1, n2);
+			
+			n1.addOutgoingEdge(e);
+			n2.addIncomingEdge(e);
 		}
-		
+
 		new SCCComputer().computeSCC(g);
 	}
-	
+
 	public void computeSCC(Graph g) {
-		
+		g.reverseEdgeDirections();
+		dfsLoop(g, false);
+		g.unMarkAllNodes();
+		g.switchValuesAndFinishingTimeInNodes();
+		g.reverseEdgeDirections();
+		dfsLoop(g, true);
+		Collections.sort(finalSccCounts);
+		Collections.reverse(finalSccCounts);
+		int size = finalSccCounts.size();
+		while (size < 5) {
+			finalSccCounts.add(0);
+			size++;
+		}
+		System.out.println(finalSccCounts);
 	}
-	
-	public void dfsLoop() {
-		
+
+	public void dfsLoop(Graph g, boolean countScc) {
+		TreeSet<Node> sortedNodes = g.getNodesInSortedOrder();
+		for(Node i: sortedNodes) {
+			if(!i.isExplored()) {
+				s = i;
+				localSccCount = 1;
+				dfs(g, i, countScc);
+				if(countScc) {
+					finalSccCounts.add(localSccCount);
+				}
+			}
+		}		
 	}
-	
-	public int dfs() {
-		return 1;
+
+	public void dfs(Graph g, Node i, boolean countScc) {
+		i.markExplored();
+		i.setLeader(s);
+		ArrayList<Edge> outgoingEdges = i.getOutGoingEdges();
+		for(Edge e: outgoingEdges) {
+			Node j = e.getEndNode();
+			if(!j.isExplored()) {
+				if(countScc) {
+					localSccCount++;
+				}
+				dfs(g, j, countScc);
+			}
+		}
+		t++;
+		i.setFinishingTime(t);
 	}
 }
 
