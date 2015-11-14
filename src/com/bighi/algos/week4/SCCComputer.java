@@ -56,7 +56,7 @@ public class SCCComputer {
 		
 		g.reverseEdgeDirections();
 		dfsLoop(g, false, finalSccCounts);
-		g.unMarkAllNodes();
+		g.unMarkExploredAllNodes();
 		g.switchValuesAndFinishingTimeInNodes();
 		g.reverseEdgeDirections();
 		dfsLoop(g, true, finalSccCounts);

@@ -84,7 +84,7 @@ public class Graph {
 		}
 	}
 	
-	public void unMarkAllNodes() {
+	public void unMarkExploredAllNodes() {
 		for(Node n: allNodes) {
 			n.unmarkExplored();
 		}
