@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.TreeSet;
 
 public class SCCComputer {
-	private static final String FILENAME1 = "week4/SCC.txt";
+	private static final String FILENAME1 = "week4/small2.txt";
 
 	int t = 0; // # of nodes processed so far
 	Node s = null; // current source vertex
