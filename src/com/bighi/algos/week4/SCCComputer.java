@@ -11,7 +11,7 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 public class SCCComputer {
-    private static final String FILENAME1 = "week4/SCC.txt";
+    private static final String FILENAME1 = "week4/small1.txt";
 
     int t = 0; // # of nodes processed so far
     Node s = null; // current source vertex
@@ -48,7 +48,7 @@ public class SCCComputer {
             n2.addIncomingEdge(e);
         }
 
-        List<Integer> finalSccCounts = new SCCComputer().computeSCC(g);
+        List<Integer> finalSccCounts = computeSCC(g);
         // System.out.println(finalSccCounts);
         return finalSccCounts.subList(0, 5);
     }
