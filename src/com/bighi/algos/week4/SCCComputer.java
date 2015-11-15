@@ -7,18 +7,21 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.TreeSet;
 
 public class SCCComputer {
-	private static final String FILENAME1 = "week4/small2.txt";
+	private static final String FILENAME1 = "week4/SCC.txt";
 
 	int t = 0; // # of nodes processed so far
 	Node s = null; // current source vertex
 	int localSccCount;
 		
 	public static void main(String[] args) throws IOException {
+		System.out.println("Start time: " + new GregorianCalendar().getTime());
 		System.out.println(new SCCComputer().getTop5Sccs(FILENAME1));
+		System.out.println("End time: " + new GregorianCalendar().getTime());
 	}
 	
 	public List<Integer> getTop5Sccs(String fileName) throws IOException {
@@ -67,12 +70,14 @@ public class SCCComputer {
 			finalSccCounts.add(0);
 			size++;
 		}
-		System.out.println(finalSccCounts);
+		//System.out.println(finalSccCounts);
 		return finalSccCounts;
 	}
 
 	public void dfsLoop(Graph g, boolean countScc, List<Integer> finalSccCounts) {
-		TreeSet<Node> sortedNodes = g.getNodesInSortedOrder();
+		//TreeSet<Node> sortedNodes = g.getNodesInSortedOrder();
+		ArrayList<Node> sortedNodes = g.getAllNodes();
+		Collections.sort(sortedNodes);
 		for(Node i: sortedNodes) {
 			if(!i.isExplored()) {
 				s = i;

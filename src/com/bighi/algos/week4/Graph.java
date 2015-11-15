@@ -1,21 +1,15 @@
 package com.bighi.algos.week4;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.TreeSet;
+import java.util.HashMap;
 
 public class Graph {
+	
 	private ArrayList<Node> allNodes = new ArrayList<>();
 	private ArrayList<Edge> allEdges = new ArrayList<>();
 	
-	private TreeSet<Node> nodesInSortedOrder = new TreeSet<>();
+	private HashMap<Integer, Node> nodeMap = new HashMap<>();
 	
-	private Node dummyNode = new Node(0);
-	
-	public TreeSet<Node> getNodesInSortedOrder() {
-		return nodesInSortedOrder;
-	}
-
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
@@ -26,13 +20,13 @@ public class Graph {
 		return builder.toString();
 	}
 	
+	public ArrayList<Node> getAllNodes() {
+		return allNodes;
+	}
+	
 	public Edge addEdge(Edge e) {
-		int idx = allEdges.indexOf(e);
-		if (idx == -1) {
-			allEdges.add(e);
-			return e;
-		}
-		return allEdges.get(idx);
+		allEdges.add(e);
+		return e;
 	}
 	
 	public void addEdges(Edge... es) {
@@ -42,32 +36,17 @@ public class Graph {
 	}
 
 	public Node addNode(int value) {
-		dummyNode.setValue(value);
-		
-		return addNode(dummyNode);
-	}
-	
-	private Node addNode(Node n) {
-		int idx = allNodes.indexOf(n);
-		if(idx == -1){
-			n = new Node(n.getValue());
+		Node n = nodeMap.get(value);
+		if(n == null) {
+			n = new Node(value);
 			allNodes.add(n);
-			addNodeToSortedList(n);
-			return n;
+			
+			nodeMap.put(value, n);
 		}
-		return allNodes.get(idx);
+		
+		return n;
 	}
 	
-	public void addNodes(Node... ns) {
-		for (Node n: ns) {
-			addNode(n);
-		}
-	}
-	
-	private void addNodeToSortedList(Node... n) {
-		nodesInSortedOrder.addAll(Arrays.asList(n));
-	}
-
 	public void reverseEdgeDirections() {
 		for(Edge e: allEdges) {
 			Node newStartNode = e.getEndNode();
@@ -91,12 +70,10 @@ public class Graph {
 	}
 	
 	public void switchValuesAndFinishingTimeInNodes() {
-		nodesInSortedOrder.clear();
 		for(Node n: allNodes) {
 			int temp = n.getValue();
 			n.setValue(n.getFinishingTime());
 			n.setFinishingTime(temp);
-			nodesInSortedOrder.add(n);
 		}
 	}
 }
