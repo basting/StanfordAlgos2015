@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.TreeSet;
 
 public class SCCComputer {
 	private static final String FILENAME1 = "week4/SCC.txt";

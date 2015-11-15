@@ -8,6 +8,7 @@ public class Graph {
 	private ArrayList<Node> allNodes = new ArrayList<>();
 	private ArrayList<Edge> allEdges = new ArrayList<>();
 	
+	// Maps node values with the actual node objects
 	private HashMap<Integer, Node> nodeMap = new HashMap<>();
 	
 	@Override
