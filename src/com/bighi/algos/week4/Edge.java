@@ -1,32 +1,32 @@
 package com.bighi.algos.week4;
 
 public class Edge {
-	private Node startNode;
-	private Node endNode;
-	
-	@Override
-	public String toString() {
-		return startNode.getValue() + "-->" + endNode.getValue();
-	}
-	
-	public Edge(Node startNode, Node endNode) {
-		this.startNode = startNode;
-		this.endNode = endNode;
-	}
-	
-	public Node getStartNode() {
-		return startNode;
-	}
+    private Node startNode;
+    private Node endNode;
 
-	public void setStartNode(Node startNode) {
-		this.startNode = startNode;
-	}
+    @Override
+    public String toString() {
+        return startNode.getValue() + "-->" + endNode.getValue();
+    }
 
-	public Node getEndNode() {
-		return endNode;
-	}
+    public Edge(Node startNode, Node endNode) {
+        this.startNode = startNode;
+        this.endNode = endNode;
+    }
 
-	public void setEndNode(Node endNode) {
-		this.endNode = endNode;
-	}
+    public Node getStartNode() {
+        return startNode;
+    }
+
+    public void setStartNode(Node startNode) {
+        this.startNode = startNode;
+    }
+
+    public Node getEndNode() {
+        return endNode;
+    }
+
+    public void setEndNode(Node endNode) {
+        this.endNode = endNode;
+    }
 }
