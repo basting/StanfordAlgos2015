@@ -11,100 +11,100 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 public class SCCComputer {
-	private static final String FILENAME1 = "week4/SCC.txt";
+    private static final String FILENAME1 = "week4/SCC.txt";
 
-	int t = 0; // # of nodes processed so far
-	Node s = null; // current source vertex
-	int localSccCount;
-		
-	public static void main(String[] args) throws IOException {
-		System.out.println("Start time: " + new GregorianCalendar().getTime());
-		System.out.println(new SCCComputer().getTop5Sccs(FILENAME1));
-		System.out.println("End time: " + new GregorianCalendar().getTime());
-	}
-	
-	public List<Integer> getTop5Sccs(String fileName) throws IOException {
-		Graph g = new Graph();
+    int t = 0; // # of nodes processed so far
+    Node s = null; // current source vertex
+    int localSccCount;
 
-		File file = new File(fileName);
-		Path path = file.toPath();
+    public static void main(String[] args) throws IOException {
+        System.out.println("Start time: " + new GregorianCalendar().getTime());
+        System.out.println(new SCCComputer().getTop5Sccs(FILENAME1));
+        System.out.println("End time: " + new GregorianCalendar().getTime());
+    }
 
-		List<String> allInput = Files.readAllLines(path,
-				Charset.defaultCharset());
+    public List<Integer> getTop5Sccs(String fileName) throws IOException {
+        Graph g = new Graph();
 
-		for (String ip : allInput) {
-			String[] vertices = ip.split(" ");
-			int val1 = Integer.valueOf(vertices[0]);
-			int val2 = Integer.valueOf(vertices[1]);
-			
-			Node n1 = g.addNode(val1);
-			Node n2 = g.addNode(val2);
+        File file = new File(fileName);
+        Path path = file.toPath();
 
-			Edge e = new Edge(n1, n2);
+        List<String> allInput = Files.readAllLines(path,
+                Charset.defaultCharset());
 
-			g.addEdge(e);
-			
-			n1.addOutgoingEdge(e);
-			n2.addIncomingEdge(e);
-		}
+        for (String ip : allInput) {
+            String[] vertices = ip.split(" ");
+            int val1 = Integer.valueOf(vertices[0]);
+            int val2 = Integer.valueOf(vertices[1]);
 
-		List<Integer> finalSccCounts = new SCCComputer().computeSCC(g);
-		//System.out.println(finalSccCounts);
-		return finalSccCounts.subList(0,5);
-	}
+            Node n1 = g.addNode(val1);
+            Node n2 = g.addNode(val2);
 
-	public List<Integer> computeSCC(Graph g) {
-		List<Integer> finalSccCounts = new ArrayList<>();
-		
-		g.reverseEdgeDirections();
-		dfsLoop(g, false, finalSccCounts);
-		g.unMarkExploredAllNodes();
-		g.switchValuesAndFinishingTimeInNodes();
-		g.reverseEdgeDirections();
-		dfsLoop(g, true, finalSccCounts);
-		Collections.sort(finalSccCounts);
-		Collections.reverse(finalSccCounts);
-		int size = finalSccCounts.size();
-		while (size < 5) {
-			finalSccCounts.add(0);
-			size++;
-		}
-		//System.out.println(finalSccCounts);
-		return finalSccCounts;
-	}
+            Edge e = new Edge(n1, n2);
 
-	public void dfsLoop(Graph g, boolean countScc, List<Integer> finalSccCounts) {
-		//TreeSet<Node> sortedNodes = g.getNodesInSortedOrder();
-		ArrayList<Node> sortedNodes = g.getAllNodes();
-		Collections.sort(sortedNodes);
-		for(Node i: sortedNodes) {
-			if(!i.isExplored()) {
-				s = i;
-				localSccCount = 1;
-				dfs(g, i, countScc);
-				if(countScc) {
-					finalSccCounts.add(localSccCount);
-				}
-			}
-		}		
-	}
+            g.addEdge(e);
 
-	public void dfs(Graph g, Node i, boolean countScc) {
-		i.markExplored();
-		i.setLeader(s);
-		ArrayList<Edge> outgoingEdges = i.getOutGoingEdges();
-		for(Edge e: outgoingEdges) {
-			Node j = e.getEndNode();
-			if(!j.isExplored()) {
-				if(countScc) {
-					localSccCount++;
-				}
-				dfs(g, j, countScc);
-			}
-		}
-		t++;
-		i.setFinishingTime(t);
-	}
+            n1.addOutgoingEdge(e);
+            n2.addIncomingEdge(e);
+        }
+
+        List<Integer> finalSccCounts = new SCCComputer().computeSCC(g);
+        // System.out.println(finalSccCounts);
+        return finalSccCounts.subList(0, 5);
+    }
+
+    public List<Integer> computeSCC(Graph g) {
+        List<Integer> finalSccCounts = new ArrayList<>();
+
+        g.reverseEdgeDirections();
+        dfsLoop(g, false, finalSccCounts);
+        g.unMarkExploredAllNodes();
+        g.switchValuesAndFinishingTimeInNodes();
+        g.reverseEdgeDirections();
+        dfsLoop(g, true, finalSccCounts);
+        Collections.sort(finalSccCounts);
+        Collections.reverse(finalSccCounts);
+        int size = finalSccCounts.size();
+        while (size < 5) {
+            finalSccCounts.add(0);
+            size++;
+        }
+        // System.out.println(finalSccCounts);
+        return finalSccCounts;
+    }
+
+    public void dfsLoop(Graph g, boolean countScc, List<Integer> finalSccCounts) {
+        // TreeSet<Node> sortedNodes = g.getNodesInSortedOrder();
+        ArrayList<Node> sortedNodes = g.getAllNodes();
+        Collections.sort(sortedNodes);
+        for (Node i : sortedNodes) {
+            if (!i.isExplored()) {
+                s = i;
+                localSccCount = 1;
+                dfs(g, i, countScc);
+                if (countScc) {
+                    finalSccCounts.add(localSccCount);
+                }
+            }
+        }
+    }
+
+    public void dfs(Graph g, Node i, boolean countScc) {
+        i.markExplored();
+        i.setLeader(s);
+        ArrayList<Edge> outgoingEdges = i.getOutGoingEdges();
+        for (Edge e : outgoingEdges) {
+            Node j = e.getEndNode();
+            if (!j.isExplored()) {
+                if (countScc) {
+                    localSccCount++;
+                }
+                dfs(g, j, countScc);
+            }
+        }
+        t++;
+        i.setFinishingTime(t);
+    }
 }
 
 /*
