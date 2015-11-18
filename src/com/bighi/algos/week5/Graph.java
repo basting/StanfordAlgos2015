@@ -5,33 +5,6 @@ import java.util.HashMap;
 
 public class Graph {
 
-	class EndNodes {
-		Node n1;
-		Node n2;
-
-		public EndNodes(Node node1, Node node2) {
-			n1 = node1;
-			n2 = node2;
-		}
-
-		@Override
-		public boolean equals(Object obj) {
-			EndNodes endNodes = (EndNodes) obj;
-			if (n1.getValue() == endNodes.n1.getValue() && n2.getValue() == endNodes.n2.getValue()) {
-				return true;
-			}
-			if (n1.getValue() == endNodes.n2.getValue() && n2.getValue() == endNodes.n1.getValue()) {
-				return true;
-			}
-			return false;
-		}
-
-		@Override
-		public int hashCode() {
-			return new Integer(n1.getValue() + n2.getValue()).hashCode();
-		}
-	}
-
 	private ArrayList<Node> allNodes = new ArrayList<>();
 	private ArrayList<Edge> allEdges = new ArrayList<>();
 
@@ -65,13 +38,48 @@ public class Graph {
 	}
 
 	public Node addNode(int value) {
-		Node n = nodeMap.get(value);
+		Node n = getNodeFromGraph(value);
 		if (n == null) {
-			n = new Node(value);
+			n = new Node(value, Node.DEFAULT_DIST);
 			allNodes.add(n);
-			nodeMap.put(value, n);
+			addToNodeMap(value, n);
 		}
 
 		return n;
+	}
+	
+	public Node getNodeFromGraph(int value) {
+		return nodeMap.get(value);
+	}
+	
+	private void addToNodeMap(int value, Node n) {
+		nodeMap.put(value, n);
+	}
+	
+	class EndNodes {
+		Node n1;
+		Node n2;
+
+		public EndNodes(Node node1, Node node2) {
+			n1 = node1;
+			n2 = node2;
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			EndNodes endNodes = (EndNodes) obj;
+			if (n1.getValue() == endNodes.n1.getValue() && n2.getValue() == endNodes.n2.getValue()) {
+				return true;
+			}
+			if (n1.getValue() == endNodes.n2.getValue() && n2.getValue() == endNodes.n1.getValue()) {
+				return true;
+			}
+			return false;
+		}
+
+		@Override
+		public int hashCode() {
+			return new Integer(n1.getValue() + n2.getValue()).hashCode();
+		}
 	}
 }

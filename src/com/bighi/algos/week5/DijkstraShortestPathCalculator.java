@@ -5,20 +5,24 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
 
 public class DijkstraShortestPathCalculator {
 
-	private static final String FILENAME1 = "week5/small1.txt";
-
+	private static final String FILENAME1 = "week5/dijkstraData.txt";
+	
+	private ArrayList<Node> verticesProcessedSoFar = new ArrayList<>();
+	private Node sourceVertex;
+	
 	public static void main(String[] args) throws IOException {
 		System.out.println("Start time: " + new GregorianCalendar().getTime());
-		System.out.println(new DijkstraShortestPathCalculator().calculateShortestPaths(FILENAME1));
+		new DijkstraShortestPathCalculator().readInputAndcalculateShortestPaths(FILENAME1);
 		System.out.println("End time: " + new GregorianCalendar().getTime());
 	}
 
-	public int calculateShortestPaths(String fileName) throws IOException {
+	public void readInputAndcalculateShortestPaths(String fileName) throws IOException {
 		Graph g = new Graph();
 
         File file = new File(fileName);
@@ -46,8 +50,49 @@ public class DijkstraShortestPathCalculator {
 	            n2.addRelatedEdge(e);
             }
         }
+        
+        sourceVertex = g.getNodeFromGraph(1);
+        sourceVertex.setShortDistanceFromSource(0);
+        sourceVertex.markProcessed();
+        verticesProcessedSoFar.add(sourceVertex);
+        
+        int targetSize = g.getAllNodes().size();
+        
+        calculateShortestPaths(g, targetSize);
+        
 		System.out.println(g);
-		return 0;
+	}
+
+	private void calculateShortestPaths(Graph g, int targetSize) {
+		while(verticesProcessedSoFar.size() < targetSize) {
+			Node minNode = new Node(1, Node.DEFAULT_DIST + 1000);
+			minNode.setGreedyScore(Integer.MAX_VALUE);
+			int minDist = Node.DEFAULT_DIST + 1000;
+			Edge minEdge = new Edge(new Node(1, Node.DEFAULT_DIST + 1000), minNode, minDist);
+			
+			int size = verticesProcessedSoFar.size();
+			for(int i=0; i<size; i++) {
+				Node currNode = verticesProcessedSoFar.get(i);
+				ArrayList<Edge> relatedEdges = currNode.getRelatedEdges();
+				for(Edge currEdge : relatedEdges) {
+					Node oppNode = currEdge.getOppositeNode(currNode);
+					if(oppNode.isProcessed()) {
+						continue;
+					}
+					int newGreedyScore = currNode.getShortDistanceFromSource() + currEdge.getLength();
+					int currMinGreedyScore = minNode.getGreedyScore();
+					if(newGreedyScore < currMinGreedyScore) {
+						minNode = oppNode;
+						minEdge = currEdge;
+						minDist = newGreedyScore;
+						minNode.setGreedyScore(newGreedyScore);
+					}
+				}				
+			}
+			minNode.setShortDistanceFromSource(minDist);
+			minNode.markProcessed();
+			verticesProcessedSoFar.add(minNode);
+		}				
 	}
 }
 
@@ -85,4 +130,8 @@ public class DijkstraShortestPathCalculator {
  * heap-based version. Note this requires a heap that supports deletions, and
  * you'll probably need to maintain some kind of mapping between vertices and
  * their positions in the heap.
+ */
+
+/*
+ * Answer: 2599,2610,2947,2052,2367,2399,2029,2442,2505,3068 
  */

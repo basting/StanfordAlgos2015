@@ -7,15 +7,35 @@ public class Edge {
 
 	@Override
     public String toString() {
-        return node1.getValue() + "<--"+ length +"-->" + node2.getValue();
+        return new StringBuilder().append(node1.getValue()) 
+        		.append("(")
+        		.append(node1.getShortDistanceFromSource())
+        		.append(")")
+        		.append("<--")
+        		.append(length)
+        		.append("-->")
+        		.append(node2.getValue())
+        		.append("(")
+        		.append(node2.getShortDistanceFromSource())
+        		.append(")")
+        		.toString();
     }
 
-    public Edge(Node node1, Node node2, int length) {
+	public Edge(Node node1, Node node2, int length) {
         this.node1 = node1;
         this.node2 = node2;
         this.length = length;
     }
     
+	public Node getOppositeNode(Node firstNode) {
+		if(firstNode.getValue() == node1.getValue()) {
+			return node2;
+		}
+		
+		return node1;
+		
+	}
+	
     public Node getNode1() {
 		return node1;
 	}

@@ -1,0 +1,29 @@
+"node, cost to arrive at node, path to node from node 1"
+small1.txt
+1 0 []
+2 3 [2]
+3 3 [3]
+4 5 [2, 4]
+
+
+small2.txt
+1 0 []
+2 3 [2]
+3 4 [2, 3]
+4 5 [2, 4]
+
+
+small3.txt
+start = 1
+finish = 7
+expected cost: 5
+
+
+large1.txt
+start = 13
+finish = 5
+expected cost: 26
+
+
+large2.txt
+the cost is 9 with path [28, 16, 6] with start point 28 and finish 6
