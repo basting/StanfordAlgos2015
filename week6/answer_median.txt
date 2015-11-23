@@ -1,0 +1,29 @@
+median_small1.txt
+Program output:
+MEDIANS:
+1 1 2 2 3 3 4 4 5 
+
+LOW HEAP:
+1 2 3 4 5 
+
+HIGH HEAP:
+6 7 8 9 
+
+medians sum= 25
+
+=====================================
+
+median_small2.txt
+
+Program output:
+MEDIANS:
+11 3 6 6 6 6 6 6 6 6 
+7 6 
+
+LOW HEAP:
+1 2 3 4 5 6 
+
+HIGH HEAP:
+7 8 9 10 11 12 
+
+medians sum= 75

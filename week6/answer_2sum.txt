@@ -1,0 +1,12 @@
+2sum_small1.txt
+45
+2sum_small2.txt
+21
+2sum_small3.txt
+3
+2sum_small4.txt
+17
+2sum_small5.txt
+73
+2sum_big_week6.txt
+427
