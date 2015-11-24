@@ -68,7 +68,6 @@ public class DijkstraShortestPathCalculator {
 			Node minNode = new Node(1, Node.DEFAULT_DIST + 1000);
 			minNode.setGreedyScore(Integer.MAX_VALUE);
 			int minDist = Node.DEFAULT_DIST + 1000;
-			Edge minEdge = new Edge(new Node(1, Node.DEFAULT_DIST + 1000), minNode, minDist);
 			
 			int size = verticesProcessedSoFar.size();
 			for(int i=0; i<size; i++) {
@@ -83,7 +82,6 @@ public class DijkstraShortestPathCalculator {
 					int currMinGreedyScore = minNode.getGreedyScore();
 					if(newGreedyScore < currMinGreedyScore) {
 						minNode = oppNode;
-						minEdge = currEdge;
 						minDist = newGreedyScore;
 						minNode.setGreedyScore(newGreedyScore);
 					}
