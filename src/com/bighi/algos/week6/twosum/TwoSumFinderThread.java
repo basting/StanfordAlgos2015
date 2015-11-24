@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.List;
@@ -12,39 +13,76 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class TwoSumFinderThread implements Runnable {
-	//private static final String FILENAME1 = "week6/2sum_small1.txt";
+	//private static final String FILENAME1 = "week6/2sum_small5.txt";
 	private static final String FILENAME1 = "week6/2sum_big_week6.txt";
 	
-	private HashSet<Long> set = new HashSet<>();
-	private ConcurrentHashMap<Long, Long> sumConcMap = new ConcurrentHashMap();
+	private static HashSet<Long> set = new HashSet<>();
+	private static ConcurrentHashMap<Long, Long> sumConcMap = new ConcurrentHashMap<>();
 	
 	
-	private static int numThreads = 2;
-	private static AtomicInteger count = new AtomicInteger();
+	private static int numThreads = 10;
+	private static AtomicInteger finalCounter = new AtomicInteger();
+	
+	private int startVal;
+	private int endVal;
+	
+	public TwoSumFinderThread(int startVal, int endVal) {
+	    this.startVal = startVal;
+	    this.endVal = endVal;
+	}
 	
 	@Override
 	public void run() {
-	    System.out.println("Start time: " + new GregorianCalendar().getTime()+ " Thread: "+ Thread.currentThread().getName());
-        int startVal = -10000;
-        int endVal = 10000;
-        
-        int ptr = (endVal - startVal) / 2;
-        
-        for(int i=0; i< numThreads; i++) {
-            count.set(count.get() + find2SumCount(startVal, startVal + ptr));
-            startVal = startVal + ptr + 1;
-        }
-        System.out.println(count);        
-        System.out.println("End time: " + new GregorianCalendar().getTime());
+	    System.out.println("Thread: "+ Thread.currentThread().getName() + " Start time: " + new GregorianCalendar().getTime());
+	    System.out.println("Thread: "+ Thread.currentThread().getName() + " processing from " + startVal + " to " + endVal);
+        int count = find2SumCount(startVal, endVal);
+        System.out.println("Thread: "+ Thread.currentThread().getName() + " processed " + count + " values");
+        finalCounter.addAndGet(count);
+        System.out.println("Thread: "+ Thread.currentThread().getName() + " End time: " + new GregorianCalendar().getTime());
 	}
 	
-	public static void main(String[] args) throws IOException {
-		new TwoSumFinderThread().readInputAndCalculate2Sums(FILENAME1);
-		
-		
+	public static void main(String[] args) throws IOException, InterruptedException {
+	    System.out.println("Main thread: "+ Thread.currentThread().getName() + " Start time: " + new GregorianCalendar().getTime());
+        readInputAndCalculate2Sums(FILENAME1);		
+		int startT = -10000;
+        int endT = 10000;
+        
+        int incr = (endT - startT + 1) / numThreads;
+        
+        ArrayList<Thread> thList = new ArrayList<>();
+        
+        int s = startT;
+        int e = startT + incr;
+        
+        while(e <= endT) {
+            TwoSumFinderThread thObj = new TwoSumFinderThread(s, e);
+            Thread t = new Thread(thObj);
+            thList.add(t);
+            t.start();
+            System.out.println("Thread: "+ t.getName() + " started");            
+            s = e + 1;
+            e = s + incr;
+        }
+        TwoSumFinderThread thObj = new TwoSumFinderThread(s, endT);
+        Thread t = new Thread(thObj);
+        thList.add(t);
+        t.start();
+        System.out.println("Thread: "+ t.getName() + " started");
+        
+        
+        for(Thread t1 : thList) {
+            System.out.println("Thread: "+ t1.getName() + " joining");
+            t1.join();
+            System.out.println("Thread: "+ t1.getName() + " joined");
+        }
+        
+        System.out.println("Main thread: "+ Thread.currentThread().getName() + " Start time: " + new GregorianCalendar().getTime());
+        
+        System.out.println("Final count: "+finalCounter.get()); 
+        
 	}
 
-	public void readInputAndCalculate2Sums(String fileName) throws IOException {
+	public static void readInputAndCalculate2Sums(String fileName) throws IOException {
 		
         File file = new File(fileName);
         Path path = file.toPath();
