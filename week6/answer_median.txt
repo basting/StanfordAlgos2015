@@ -10,9 +10,7 @@ HIGH HEAP:
 6 7 8 9 
 
 medians sum= 25
-
 =====================================
-
 median_small2.txt
 
 Program output:
