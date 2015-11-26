@@ -25,8 +25,18 @@ public class Heap<T> {
 	private class Node {
 		public T element;
 		public int position;
+		
+		@Override
+		public String toString() {
+			return element.toString();
+		}
 	}
-
+	
+	@Override
+	public String toString() {
+		return heap.toString();
+	}
+	
 	/**
 	 * Create a new heap
 	 * 

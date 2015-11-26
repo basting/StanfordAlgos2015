@@ -30,25 +30,41 @@ public class MedianMaintainer {
 		int size = allInput.size();
 
 		long sum = 0;
+		//int lastMedian = 0;
 
-		for (int i = 0; i < 20; i++) {
+		for (int i = 0; i < size; i++) {
 			String ip = allInput.get(i);
 			int ipNum = Integer.valueOf(ip);
 			int newMedian = insertElemToYoungHeap(ipNum);
 			sum = sum + newMedian;
+			//lastMedian = newMedian;
 		}
 
-		for (int i = 21; i < size; i++) {
+		/*for (int i = 20; i < size; i++) {
 			String ip = allInput.get(i);
 			int ipNum = Integer.valueOf(ip);
 			int newMedian = insertToHeapAndGetMedian(ipNum);
 			sum = sum + newMedian;
+		}*/
+		
+		long tempSum = 0;
+		for(int i : lowHeap) {
+			tempSum = tempSum + i;
 		}
+		
+		for(int i : highHeap) {
+			tempSum = tempSum + i;
+		}
+		
+		long expectedSum = (10000 * 10001)/2;
+		
+		System.out.println(expectedSum - tempSum);
+		
 		System.out.println(sum);
 		System.out.println(sum % 10000);
 	}
 
-	private int insertToHeapAndGetMedian(int num) {
+	/*private int insertToHeapAndGetMedian(int num) {
 
 		if (num < highHeap.top()) {
 			highHeap.insert(num);
@@ -57,7 +73,7 @@ public class MedianMaintainer {
 		}
 
 		return getMedianOfHeaps();
-	}
+	}*/
 
 	private int insertElemToYoungHeap(int num) {
 		if (num > 5000) {
@@ -72,6 +88,8 @@ public class MedianMaintainer {
 		normalizeHeaps();
 		if (lowHeap.size() < highHeap.size()) {
 			return highHeap.top();
+		} else if (lowHeap.size() > highHeap.size()) {
+			return lowHeap.top();
 		}
 		return lowHeap.top();
 	}
@@ -79,6 +97,8 @@ public class MedianMaintainer {
 	private void normalizeHeaps() {
 		if(lowHeap.size() > highHeap.size() + 1) {
 			highHeap.insert(lowHeap.pop());
+		} else if(highHeap.size() > lowHeap.size() + 1) {
+			lowHeap.insert(highHeap.pop());
 		}
 	}
 }
