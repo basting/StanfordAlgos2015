@@ -1,6 +1,8 @@
 package com.bighi.algos.week6.median;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -13,7 +15,7 @@ public class MedianMaintainer {
 
 	private MinHeap highHeap = new MinHeap();
 	private MaxHeap lowHeap = new MaxHeap();
-
+	
 	public static void main(String[] args) throws IOException {
 		System.out.println("Start time: " + new GregorianCalendar().getTime());
 		new MedianMaintainer().readInputAndCalculateMedians(FILENAME1);
@@ -22,6 +24,9 @@ public class MedianMaintainer {
 
 	public void readInputAndCalculateMedians(String fileName) throws IOException {
 
+		FileWriter fw = new FileWriter("median_big_output_heap.txt");
+		BufferedWriter bw = new BufferedWriter(fw);
+				
 		File file = new File(fileName);
 		Path path = file.toPath();
 
@@ -32,20 +37,22 @@ public class MedianMaintainer {
 		long sum = 0;
 		//int lastMedian = 0;
 
-		for (int i = 0; i < size; i++) {
+		/*for (int i = 0; i < 10; i++) {
 			String ip = allInput.get(i);
 			int ipNum = Integer.valueOf(ip);
 			int newMedian = insertElemToYoungHeap(ipNum);
 			sum = sum + newMedian;
+			bw.write(String.valueOf(newMedian));
+            bw.newLine();
 			//lastMedian = newMedian;
-		}
+		}*/
 
-		/*for (int i = 20; i < size; i++) {
+		for (int i = 0; i < size; i++) {
 			String ip = allInput.get(i);
 			int ipNum = Integer.valueOf(ip);
 			int newMedian = insertToHeapAndGetMedian(ipNum);
 			sum = sum + newMedian;
-		}*/
+		}
 		
 		long tempSum = 0;
 		for(int i : lowHeap) {
@@ -62,25 +69,22 @@ public class MedianMaintainer {
 		
 		System.out.println(sum);
 		System.out.println(sum % 10000);
+		
+		bw.close();
 	}
 
-	/*private int insertToHeapAndGetMedian(int num) {
+	private int insertToHeapAndGetMedian(int num) {
 
-		if (num < highHeap.top()) {
-			highHeap.insert(num);
+		if(lowHeap.size() > 0) {
+			if(num > lowHeap.top()) {
+				highHeap.insert(num);
+			} else {
+				lowHeap.insert(num);
+			}
 		} else {
 			lowHeap.insert(num);
 		}
 
-		return getMedianOfHeaps();
-	}*/
-
-	private int insertElemToYoungHeap(int num) {
-		if (num > 5000) {
-			highHeap.insert(num);
-		} else {
-			lowHeap.insert(num);
-		}
 		return getMedianOfHeaps();
 	}
 
