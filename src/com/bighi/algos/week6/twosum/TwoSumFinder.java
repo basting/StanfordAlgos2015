@@ -10,7 +10,7 @@ import java.util.HashSet;
 import java.util.List;
 
 public class TwoSumFinder {
-	private static final String FILENAME1 = "week6/2sum_big_week6.txt";
+	private static final String FILENAME1 = "week6/2sum/2sum_small5.txt";
 	
 	public static void main(String[] args) throws IOException {
 		System.out.println("Start time: " + new GregorianCalendar().getTime());

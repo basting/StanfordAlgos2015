@@ -13,8 +13,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class TwoSumFinderThread implements Runnable {
-	//private static final String FILENAME1 = "week6/2sum_small5.txt";
-	private static final String FILENAME1 = "week6/2sum_big_week6.txt";
+	private static final String FILENAME1 = "week6/2sum/2sum_small5.txt";
+	//private static final String FILENAME1 = "week6/2sum_big_week6.txt";
 	
 	private static HashSet<Long> set = new HashSet<>();
 	private static ConcurrentHashMap<Long, Long> sumConcMap = new ConcurrentHashMap<>();
