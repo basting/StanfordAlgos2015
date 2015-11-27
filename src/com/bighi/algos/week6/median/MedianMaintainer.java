@@ -1,20 +1,20 @@
 package com.bighi.algos.week6.median;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Collections;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.PriorityQueue;
 
 public class MedianMaintainer {
 	private static final String FILENAME1 = "week6/median/Median_big_week6.txt";
 
-	private MinHeap highHeap = new MinHeap();
-	private MaxHeap lowHeap = new MaxHeap();
+	private PriorityQueue<Integer> highHeap = new PriorityQueue<>(5000);
+	private PriorityQueue<Integer> lowHeap = new PriorityQueue<>(5000, Collections.reverseOrder());
 	
 	public static void main(String[] args) throws IOException {
 		System.out.println("Start time: " + new GregorianCalendar().getTime());
@@ -24,9 +24,6 @@ public class MedianMaintainer {
 
 	public void readInputAndCalculateMedians(String fileName) throws IOException {
 
-		FileWriter fw = new FileWriter("median_big_output_heap.txt");
-		BufferedWriter bw = new BufferedWriter(fw);
-				
 		File file = new File(fileName);
 		Path path = file.toPath();
 
@@ -35,18 +32,7 @@ public class MedianMaintainer {
 		int size = allInput.size();
 
 		long sum = 0;
-		//int lastMedian = 0;
-
-		/*for (int i = 0; i < 10; i++) {
-			String ip = allInput.get(i);
-			int ipNum = Integer.valueOf(ip);
-			int newMedian = insertElemToYoungHeap(ipNum);
-			sum = sum + newMedian;
-			bw.write(String.valueOf(newMedian));
-            bw.newLine();
-			//lastMedian = newMedian;
-		}*/
-
+		
 		for (int i = 0; i < size; i++) {
 			String ip = allInput.get(i);
 			int ipNum = Integer.valueOf(ip);
@@ -70,19 +56,18 @@ public class MedianMaintainer {
 		System.out.println(sum);
 		System.out.println(sum % 10000);
 		
-		bw.close();
 	}
 
 	private int insertToHeapAndGetMedian(int num) {
 
 		if(lowHeap.size() > 0) {
-			if(num > lowHeap.top()) {
-				highHeap.insert(num);
+			if(num > lowHeap.peek()) {
+				highHeap.offer(num);
 			} else {
-				lowHeap.insert(num);
+				lowHeap.offer(num);
 			}
 		} else {
-			lowHeap.insert(num);
+			lowHeap.offer(num);
 		}
 
 		return getMedianOfHeaps();
@@ -91,18 +76,18 @@ public class MedianMaintainer {
 	private int getMedianOfHeaps() {
 		normalizeHeaps();
 		if (lowHeap.size() < highHeap.size()) {
-			return highHeap.top();
+			return highHeap.peek();
 		} else if (lowHeap.size() > highHeap.size()) {
-			return lowHeap.top();
+			return lowHeap.peek();
 		}
-		return lowHeap.top();
+		return lowHeap.peek();
 	}
 	
 	private void normalizeHeaps() {
 		if(lowHeap.size() > highHeap.size() + 1) {
-			highHeap.insert(lowHeap.pop());
+			highHeap.offer(lowHeap.remove());
 		} else if(highHeap.size() > lowHeap.size() + 1) {
-			lowHeap.insert(highHeap.pop());
+			lowHeap.offer(highHeap.remove());
 		}
 	}
 }

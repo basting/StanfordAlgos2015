@@ -1,8 +1,6 @@
 package com.bighi.algos.week6.median;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Arrays;
@@ -14,9 +12,6 @@ public class MedianMaintainerNaive {
 
 	public static void main(String[] args) throws IOException {
 
-		FileWriter fw = new FileWriter("median_big_output_naive.txt");
-		BufferedWriter bw = new BufferedWriter(fw);
-		
 		File file = new File(FILENAME1);
 		Path path = file.toPath();
 		
@@ -34,13 +29,10 @@ public class MedianMaintainerNaive {
             } else {
             	item = list[(i-1)/2];
             }
-            sum += item;
-            bw.write(String.valueOf(item));
-            bw.newLine();
+            sum += item;            
         }
         System.out.println(sum);
         System.out.println(sum%10000);
-        bw.close();
         sc.close();
 	}
 }
