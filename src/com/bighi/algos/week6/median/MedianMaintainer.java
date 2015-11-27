@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.PriorityQueue;
 
 public class MedianMaintainer {
-	private static final String FILENAME1 = "week6/median/median_small2.txt";
+	private static final String FILENAME1 = "week6/median/Median_big_week6.txt";
 
 	private PriorityQueue<Integer> highHeap = new PriorityQueue<>(5000);
 	private PriorityQueue<Integer> lowHeap = new PriorityQueue<>(5000, Collections.reverseOrder());
@@ -46,12 +46,8 @@ public class MedianMaintainer {
 
 	private int insertToHeapAndGetMedian(int num) {
 
-		if(lowHeap.size() > 0) {
-			if(num > lowHeap.peek()) {
-				highHeap.offer(num);
-			} else {
-				lowHeap.offer(num);
-			}
+		if(lowHeap.size() > 0 && num > lowHeap.peek()) {
+			highHeap.offer(num);
 		} else {
 			lowHeap.offer(num);
 		}
